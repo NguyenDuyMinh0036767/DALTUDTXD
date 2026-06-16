@@ -88,9 +88,9 @@
 
         <!-- Khu vực button -->
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,85,10,0" Grid.Row="1" RenderTransformOrigin="0.509,-4.734" Height="160">
-            <Button x:Name="SaveButton" Style="{StaticResource RoundedButton}" Content="Lưu vật liệu" Background="#33FF33" Height="50" Click="SaveButton_Click"/>
-            <Button x:Name="EditButton" Style="{StaticResource RoundedButton}" Content="Sửa vật liệu" Background="#666666" Height="50" Click="EditButton_Click"/>
-            <Button x:Name="DeleteButton" Style="{StaticResource RoundedButton}" Content="Xóa vật liệu" Background="#FF0000" Height="50" Click="DeleteButton_Click"/>
+            <Button x:Name="SaveButton" Style="{StaticResource RoundedButton}" Content="Lưu vật liệu" Background="#33FF33" Foreground="Black" Height="50" Click="SaveButton_Click"/>
+            <Button x:Name="EditButton" Style="{StaticResource RoundedButton}" Content="Sửa vật liệu" Background="#777777" Foreground="white" Height="50" Click="EditButton_Click"/>
+            <Button x:Name="DeleteButton" Style="{StaticResource RoundedButton}" Content="Xóa vật liệu" Background="#FF0000" Foreground="Black" Height="50" Click="DeleteButton_Click"/>
         </StackPanel>
 
         <!-- Khu vực hiển thị danh sách vật liệu -->

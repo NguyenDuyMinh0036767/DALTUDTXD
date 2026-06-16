@@ -88,7 +88,7 @@
                     Content="Nhập từ Etab" Width="130" Height="50" Margin="0,0,20,0"  
                     Background="#777777" Foreground="White"/>
             <Button x:Name="btnThem" Command="{Binding cmLuuCot}" CommandParameter="{Binding ElementName=pgCLParameter}" 
-                    Content="Lưu" Width="130" Height="50" Background="#00FF00" Foreground="White"/>
+                    Content="Lưu" Width="130" Height="50" Background="#00FF00" Foreground="Black"/>
         </StackPanel>
 
         <!-- Danh sách cột -->

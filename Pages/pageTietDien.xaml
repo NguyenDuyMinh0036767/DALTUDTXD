@@ -93,6 +93,6 @@
             </GroupBox>
         </StackPanel>
 
-        <Button Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" x:Name="btnThem" Content="Lưu" Width="130" Height="45" Margin="95,430,0,0" HorizontalAlignment="Left" Background="#00CC33" Foreground="White" Click="btnThem_Click" RenderTransformOrigin="-0.075,-2.796"/>
+        <Button Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" x:Name="btnThem" Content="Lưu" Width="130" Height="45" Margin="95,430,0,0" HorizontalAlignment="Left" Background="#00CC33" Foreground="Black" Click="btnThem_Click" RenderTransformOrigin="-0.075,-2.796"/>
     </Grid>
 </Page>
