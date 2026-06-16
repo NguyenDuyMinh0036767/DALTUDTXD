@@ -1,0 +1,7 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <SolidColorBrush x:Key="ChuDao1" Color="#5c96ff"/>
+    <SolidColorBrush x:Key="ChuDao2" Color="#4569eb"/>
+    <SolidColorBrush x:Key="ChuDao3" Color="#96c5ff"/>
+    <SolidColorBrush x:Key="ChuDao4" Color="#9be7ff"/>
+</ResourceDictionary>

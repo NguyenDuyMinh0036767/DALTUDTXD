@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{85BA6FEC-B439-4B8A-A066-FECF4F4211F6}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>HUCE_DALTUD_LOPNV90_2026_0053867</RootNamespace>
+    <AssemblyName>HUCE_DALTUD_LOPNV90_2026_0053867</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ETABSv1">
+      <HintPath>..\..\..\CAI DAT ETAB\ETABSv1.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Controls.Ribbon" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Class\ChuongTrinhCon.cs" />
+    <Compile Include="Class\clsBienToanCuc.cs" />
+    <Compile Include="Class\clsColumn.cs" />
+    <Compile Include="Class\clsTietDien.cs" />
+    <Compile Include="Class\clsVatLieuThep.cs" />
+    <Compile Include="KetNoiEtabs\EtabsAPI_Ctrinhcon.cs" />
+    <Compile Include="KetNoiEtabs\EtabsAPI_Frame.cs" />
+    <Compile Include="KetNoiEtabs\EtabsAPI_FrameForce.cs" />
+    <Compile Include="KetNoiEtabs\EtabsAPI_TietdienFrame.cs" />
+    <Compile Include="Pages\pageColumnParameters.xaml.cs">
+      <DependentUpon>pageColumnParameters.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\pageTietDien.xaml.cs">
+      <DependentUpon>pageTietDien.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\pageTinhToan.xaml.cs">
+      <DependentUpon>pageTinhToan.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\pageVatLieu.xaml.cs">
+      <DependentUpon>pageVatLieu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\ColumnParametersVM.cs" />
+    <Compile Include="ViewModels\RelayCommand.cs" />
+    <Compile Include="ViewModels\TinhToanVM.cs" />
+    <Compile Include="View\ViewDangNhap.xaml.cs">
+      <DependentUpon>ViewDangNhap.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ViewTrangChu.xaml.cs">
+      <DependentUpon>ViewTrangChu.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Pages\pageColumnParameters.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\pageTietDien.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\pageTinhToan.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\pageVatLieu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\MainViewModel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Styles\Color.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\HomePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="View\HomePage.xaml.cs">
+      <DependentUpon>HomePage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="View\ViewDangNhap.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\ViewTrangChu.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Model\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Anh\1200px-LOGO_DHXD.png" />
+    <Resource Include="Resources\Anh\5672201.png" />
+    <Resource Include="Resources\Anh\anhnen.png" />
+    <Resource Include="Resources\Anh\Background.png" />
+    <Resource Include="Resources\Anh\dam.png" />
+    <Resource Include="Resources\Anh\excel.png" />
+    <Resource Include="Resources\Anh\help.png" />
+    <Resource Include="Resources\Anh\hinhnen.jpg" />
+    <Resource Include="Resources\Anh\i.png" />
+    <Resource Include="Resources\Anh\icontinhtoan.png" />
+    <Resource Include="Resources\Anh\khop.jpg" />
+    <Resource Include="Resources\Anh\maytinh.png" />
+    <Resource Include="Resources\Anh\ngam.jpg" />
+    <Resource Include="Resources\Anh\pdf.png" />
+    <Resource Include="Resources\Anh\save.png" />
+    <Resource Include="Resources\Anh\Screenshot 2025-03-23 122302.png" />
+    <Resource Include="Resources\Anh\settings.png" />
+    <Resource Include="Resources\Anh\steel.jpg" />
+    <Resource Include="Resources\Anh\steel.png" />
+    <Resource Include="Resources\Anh\suc.jpg" />
+    <Resource Include="Resources\Anh\succhiutai.jpg" />
+    <Resource Include="Resources\Anh\thep-hinh-chu-i.png" />
+    <Resource Include="Resources\Anh\tinhtoan.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\Back.png" />
+    <Resource Include="Resources\Icons\Logout.png" />
+    <Resource Include="Resources\Icons\Menu.png" />
+    <Resource Include="Resources\Icons\Settings.png" />
+    <Resource Include="Resources\Icons\User.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
