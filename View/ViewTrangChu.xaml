@@ -9,62 +9,20 @@
         Width="1000"
         WindowStartupLocation="CenterScreen">
 
-    <!-- ================= LOCAL STYLE (CHỈ RIÊNG RIBBON) ================= -->
     <Window.Resources>
-
-        <!-- Button dùng cho Ribbon -->
-        <Style x:Key="RibbonRoundedButton"
-               TargetType="Button"
-               BasedOn="{StaticResource {x:Type Button}}">
-
-            <Setter Property="Height" Value="60"/>
-            <Setter Property="Width" Value="125"/>
-            <Setter Property="Margin" Value="5"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Background" Value="#BBBBBB"/>
-            <Setter Property="Foreground" Value="Black"/>
-            <Setter Property="Cursor" Value="Hand"/>
-
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                CornerRadius="10"
-                                Padding="5">
-                            <ContentPresenter
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"/>
-                        </Border>
-
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#CCCCFF"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#CCCCFF"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
     </Window.Resources>
 
-    <!-- ================= LAYOUT ================= -->
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="135"/>
+        <Grid.RowDefinitions  >
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-
-        <!-- ================= RIBBON ================= -->
         <Ribbon x:Name="rbncontrol"
-                Background="#CCCCCC"
-                Foreground="Black" SelectedIndex="0">
+                Background="#F3F3F3"
+                Foreground="Black" 
+                SelectedIndex="0">
 
-            <!-- App Menu -->
             <Ribbon.ApplicationMenu>
                 <RibbonApplicationMenu KeyTip="F">
                     <RibbonApplicationMenuItem Header="Tài khoản"/>
@@ -73,135 +31,84 @@
                 </RibbonApplicationMenu>
             </Ribbon.ApplicationMenu>
 
-
-            <!-- ========== TAB: TIẾT DIỆN ========== -->
             <RibbonTab Header="Tiết diện">
 
                 <RibbonGroup Header="Material">
-
-                    <Button Style="{StaticResource RibbonRoundedButton}"
-                            Click="btnVatLieu_Click">
-                        <StackPanel>
-                            <Image Source="/Resources/Anh/steel.png" Width="30"/>
-                            <TextBlock Text="Material" TextAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-
-                    <!--<Button Style="{StaticResource RibbonRoundedButton}"
-                            Click="btnDoBenKeo_Click">
-                        <StackPanel>
-                            <Image Source="/Resources/Anh/steel.png" Width="30"/>
-                            <TextBlock Text="Tensile Strength" TextAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-
-                    <Button Style="{StaticResource RibbonRoundedButton}"
-                            Click="btnGioiHanChay_Click">
-                        <StackPanel>
-                            <Image Source="/Resources/Anh/steel.jpg" Width="30"/>
-                            <TextBlock Text="Yield Strength" TextAlignment="Center"/>
-                        </StackPanel>
-                    </Button>-->
-
+                    <RibbonButton x:Name="btnVatLieu"
+                                  LargeImageSource="/Resources/Anh/steel.png"
+                                  Label="Material"
+                                  Click="btnVatLieu_Click"
+                                  ToolTipTitle="Vật liệu mác thép"
+                                  ToolTipDescription="Cài đặt các thông số cơ lý của thép tổ hợp."/>
                 </RibbonGroup>
 
                 <RibbonGroup Header="Thông số cột">
 
-                    <Button Style="{StaticResource RibbonRoundedButton}"
-                            Click="btnThongSoCot_Click">
-                        <StackPanel>
-                            <Image Source="/Resources/Anh/5672201.png" Width="30"/>
-                            <TextBlock Text="Column parameters" TextAlignment="Center" Foreground="Black"/>
-                        </StackPanel>
-                    </Button>
+                    <RibbonButton x:Name="btnThongSoCot"
+                                  LargeImageSource="/Resources/Anh/5672201.png"
+                                  Label="Column parameters"
+                                  Click="btnThongSoCot_Click"/>
 
-                    <Button Style="{StaticResource RibbonRoundedButton}"
-                            Click="btnTietDien_Click">
-                        <StackPanel>
-                            <Image Source="/Resources/Anh/i.png" Width="20"/>
-                            <TextBlock Text="Sections" TextAlignment="Center" Foreground="Black"/>
-                        </StackPanel>
-                    </Button>
-
+                    <RibbonButton x:Name="btnTietDien"
+                                  LargeImageSource="/Resources/Anh/i.png"
+                                  Label="Sections"
+                                  Click="btnTietDien_Click"/>
 
                 </RibbonGroup>
             </RibbonTab>
 
-            <!-- ========== TAB: TÍNH TOÁN ========== -->
             <RibbonTab Header="Tính toán">
                 <RibbonGroup Header="Tính toán">
 
-                    <Button Style="{StaticResource RibbonRoundedButton}"
-                            Click="btnTinhToanKNCNLechTam_Click">
-                        <StackPanel>
-                            <Image Source="/Resources/Anh/maytinh.png" Width="35"/>
-                            <TextBlock Text="KTra nén lệch tâm"
-                                       TextAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
+                    <RibbonButton x:Name="btnTinhToanKNCNLechTam"
+                                  LargeImageSource="/Resources/Anh/maytinh.png"
+                                  Label="KTra nén lệch tâm"
+                                  Click="btnTinhToanKNCNLechTam_Click"
+                                  ToolTipTitle="Kiểm tra cấu kiện"
+                                  ToolTipDescription="Tính toán kiểm tra khả năng chịu lực nén uốn đồng thời của cột chữ I."/>
 
-                    <Button Style="{StaticResource RibbonRoundedButton}"
-                            Click="btnLuuDuAn_Click">
-                        <StackPanel>
-                            <Image Source="/Resources/Anh/save.png" Width="30"/>
-                            <TextBlock Text="Lưu dự án" TextAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
+                    <RibbonButton x:Name="btnLuuDuAn"
+                                  LargeImageSource="/Resources/Anh/save.png"
+                                  Label="Lưu dự án"
+                                  Click="btnLuuDuAn_Click"/>
 
                 </RibbonGroup>
             </RibbonTab>
 
-            <!-- ========== TAB: BÁO CÁO ========== -->
             <RibbonTab Header="Báo cáo">
                 <RibbonGroup Header="Xuất kết quả">
 
-                    <Button Style="{StaticResource RibbonRoundedButton}">
-                        <StackPanel>
-                            <Image Source="/Resources/Anh/excel.png" Width="30"/>
-                            <TextBlock Text="Excel" TextAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
+                    <RibbonButton x:Name="btnExportExcel"
+                                  LargeImageSource="/Resources/Anh/excel.png"
+                                  Label="Excel"/>
 
-                    <Button Style="{StaticResource RibbonRoundedButton}">
-                        <StackPanel>
-                            <Image Source="/Resources/Anh/pdf.png" Width="30"/>
-                            <TextBlock Text="PDF" TextAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
+                    <RibbonButton x:Name="btnExportPdf"
+                                  LargeImageSource="/Resources/Anh/pdf.png"
+                                  Label="PDF"/>
 
                 </RibbonGroup>
             </RibbonTab>
 
-            <!-- ========== TAB: HỖ TRỢ ========== -->
             <RibbonTab Header="Hỗ trợ">
                 <RibbonGroup Header="Thông tin">
 
-                    <Button Style="{StaticResource RibbonRoundedButton}">
-                        <StackPanel>
-                            <Image Source="/Resources/Anh/help.png" Width="30"/>
-                            <TextBlock Text="Hướng dẫn" TextAlignment="Center" Foreground="Black"/>
-                        </StackPanel>
-                    </Button>
+                    <RibbonButton x:Name="btnHuongDan"
+                                  LargeImageSource="/Resources/Anh/help.png"
+                                  Label="Hướng dẫn"/>
 
-                    <Button Style="{StaticResource RibbonRoundedButton}">
-                        <StackPanel>
-                            <Image Source="/Resources/Anh/settings.png" Width="30"/>
-                            <TextBlock Text="Cài đặt nâng cao"
-                                       TextAlignment="Center"
-                                       Foreground="Black"/>
-                        </StackPanel>
-                    </Button>
+                    <RibbonButton x:Name="btnCaiDatNangCao"
+                                  LargeImageSource="/Resources/Anh/settings.png"
+                                  Label="Cài đặt nâng cao"/>
 
                 </RibbonGroup>
             </RibbonTab>
 
         </Ribbon>
 
-        <!-- ================= BODY ================= -->
-        <Frame x:Name="frame_Body" Grid.Row="1">
+        <Frame x:Name="frame_Body" Grid.Row="1" NavigationUIVisibility="Hidden">
             <Frame.Background>
-                <ImageBrush ImageSource="/Resources/Anh/anhnen.png" 
-                    Stretch="UniformToFill"/>
+                <ImageBrush ImageSource="/Resources/Anh/hinhnenxam.jpg" 
+                            Stretch="UniformToFill"/>
             </Frame.Background>
         </Frame>
     </Grid>
