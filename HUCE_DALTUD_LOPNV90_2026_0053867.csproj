@@ -164,9 +164,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Model\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Resources\Anh\1200px-LOGO_DHXD.png" />
     <Resource Include="Resources\Anh\5672201.png" />
