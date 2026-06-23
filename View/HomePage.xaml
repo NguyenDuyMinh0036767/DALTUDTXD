@@ -6,7 +6,7 @@
         Width="1000"
         WindowStartupLocation="CenterScreen">
     <Window.Background>
-        <ImageBrush ImageSource="/Resources/Anh/anhnen.png" 
+        <ImageBrush ImageSource="/Resources/Anh/hinhnenxam.jpg" 
                     Stretch="None" 
             AlignmentX="Left" 
             AlignmentY="Top"
@@ -65,23 +65,23 @@
         </Grid.RowDefinitions>
 
         <!-- Background trái -->
-        <Border Grid.Row="0"
+        <!--<Border Grid.Row="0"
                 Grid.RowSpan="3"
                 Background="Transparent"
                 Margin="10"
-                CornerRadius="10"/>
+                CornerRadius="10"/>-->
 
         <!-- Logo -->
 
         <!-- Tiêu đề -->
-        <TextBlock Grid.Column="1"
+        <TextBlock
                    Grid.Row="1"
                    Text="Phần mềm tính toán cột thép chữ I"
-                   FontSize="40"
+                   FontSize="50"
                    FontWeight="Bold"
                    Foreground="Black"
                    VerticalAlignment="Top"
-                   HorizontalAlignment="Left" Margin="30,0,0,0"/>
+                   HorizontalAlignment="Left" Margin="70,10,0,0" Grid.ColumnSpan="2"/>
 
         <!-- Ghi chú -->
         <Border Grid.Column="1"
@@ -131,9 +131,7 @@
                     FontSize="20"
                     Style="{StaticResource RoundedButton}"/>
 
-            <!--<Button Content="Tiêu chuẩn Việt Nam"
-                    FontSize="20"
-                    Style="{StaticResource RoundedButton}"/>-->
+
         </StackPanel>
 
         <!-- Nội dung chính -->

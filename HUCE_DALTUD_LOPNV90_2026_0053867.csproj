@@ -199,5 +199,13 @@
     <Resource Include="Resources\Icons\Settings.png" />
     <Resource Include="Resources\Icons\User.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Anh\Hinhnen1.jpg" />
+    <Resource Include="Resources\Anh\hinhnenkem.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Anh\Hinhnen1xam.jpg" />
+    <Resource Include="Resources\Anh\hinhnenxam.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
