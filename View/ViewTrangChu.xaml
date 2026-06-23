@@ -79,6 +79,7 @@
                 <RibbonGroup Header="Xuất kết quả">
 
                     <RibbonButton x:Name="btnExportExcel"
+                                  Click="btnXuatExcel_Click"
                                   LargeImageSource="/Resources/Anh/excel.png"
                                   Label="Excel"/>
 
