@@ -58,5 +58,9 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.View
         {
             MessageBox.Show("Dữ liệu dự án đã được lưu thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
         }
+        private void btnXuatExcel_Click(object sender, RoutedEventArgs e)
+        {
+            frame_Body.Content = new pageBaoCaoExcel();
+        }
     }
 }

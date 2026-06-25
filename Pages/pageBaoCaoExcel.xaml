@@ -131,7 +131,7 @@
             <Button Width="170"
                 Height="40"
                 Background="#00FF00"
-                Foreground="Black"
+                Foreground="White"
                 FontWeight="Bold"
                 Click="btnXuatExcel_Click">
 
