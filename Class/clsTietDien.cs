@@ -98,10 +98,10 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.Class
             Origin = origin;
             _matcat = VeMC_Cot(Origin, ChieuRongCanh, DoDayCanh, ChieuCaoBung, DoDayBung);
             // Kiểm tra giá trị
-            if (!XacThucTietDien())
-            {
-                ResetValues();
-            }
+            //if (!XacThucTietDien())
+            //{
+            //    ResetValues();
+            //}
         }
         public clsTietDien(string name, double chieuRongCanh, double doDayCanh, double chieuCaoBung, double doDayBung)
         {
@@ -111,10 +111,10 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.Class
             ChieuCaoBung = chieuCaoBung;
             DoDayBung = doDayBung;
             // Kiểm tra giá trị
-            if (!XacThucTietDien())
-            {
-                ResetValues();
-            }
+            //if (!XacThucTietDien())
+            //{
+            //    ResetValues();
+            //}
         }
         // Hàm để reset các giá trị nếu không hợp lệ
         private void ResetValues()

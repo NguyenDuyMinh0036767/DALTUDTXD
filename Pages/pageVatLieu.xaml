@@ -101,7 +101,7 @@
                          Height="35"
                          Background="White"/>
 
-                <TextBlock Text="Mô đun đàn hồi (E) [MPa]:"
+                <TextBlock Text="Cường độ tính toán f:"
                            Margin="0,10,0,5"
                            Style="{StaticResource BoldText}"/>
 
@@ -110,7 +110,7 @@
                          Height="35"
                          Background="White"/>
 
-                <TextBlock Text="Cường độ chịu kéo chảy (Fy) [MPa]:"
+                <TextBlock Text="Cường độ chịu kéo (Fu):"
                            Margin="0,10,0,5"
                            Style="{StaticResource BoldText}"/>
 
@@ -168,11 +168,11 @@
                                         Width="*"
                                         Binding="{Binding TenVatLieu}"/>
 
-                    <DataGridTextColumn Header="Mô đun đàn hồi (E)"
+                    <DataGridTextColumn Header=" Cường độ tính toán f "
                                         Width="*"
                                         Binding="{Binding MoDunDanHoi}"/>
 
-                    <DataGridTextColumn Header="Cường độ chịu kéo (Fy)"
+                    <DataGridTextColumn Header="Cường độ chịu kéo (Fu)"
                                         Width="*"
                                         Binding="{Binding CuongDoChiuKeo}"/>
 
