@@ -264,6 +264,7 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.Pages
                             tenTietDien,
                             ref tenVatLieu);
 
+
                         clsVatLieuThep vatLieu = null;
 
                         foreach (clsVatLieuThep vl in clsBienToanCuc.clsVatLieu)
@@ -277,10 +278,16 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.Pages
 
                         if (vatLieu == null)
                         {
+                            double fy = 235;      // MPa
+                            double E = 210000;    // MPa
+
+                            // Nếu dùng thép Q345 thì đổi:
+                            // fy = 345;
+
                             vatLieu = new clsVatLieuThep(
                                 tenVatLieu,
-                                0,
-                                0);
+                                fy,
+                                E);
 
                             clsBienToanCuc.clsVatLieu.Add(vatLieu);
                         }
@@ -297,6 +304,7 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.Pages
                                  Math.Abs(lucDocDinh), // Lực dọc đỉnh (Đã map vào thuộc tính mới)
                                  Math.Abs(momentChan), // Momen chân
                                  story
+
                             );
 
                         clsBienToanCuc.clsColumn.Add(cot);
