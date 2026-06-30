@@ -18,17 +18,50 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.Pages
         }
 
         // ĐÃ THÊM: Định nghĩa hàm LoadDL ở chế độ public để file ViewModel gọi được
-        public void LoadDL()    
+        public void LoadDL()
         {
-            // Nếu bạn có lệnh nạp ItemSource cho các ComboBox vật liệu/tiết diện thì viết ở đây.
+            // Nếu có lệnh nạp ItemSource cho các ComboBox vật liệu/tiết diện thì viết ở đây.
             // Nếu không cần xử lý gì thêm, bạn có thể để trống hàm này để tránh lỗi compile.
         }
-        // ĐÃ THÊM: Hàm xử lý sự kiện khi chọn dòng trên DataGrid để xóa lỗi CS1061
+
+        // ĐÃ CẬP NHẬT: Xử lý hiển thị dữ liệu chi tiết lên các TextBox/ComboBox phía trên khi click chọn dòng
         private void dataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Tạm thời để trống để dự án Build thành công.
-            // Sau này bạn có thể bổ sung logic hiển thị thông tin chi tiết cấu kiện tại đây nếu cần.
+            if (dtgColumn.SelectedItem != null)
+            {
+                try
+                {
+                    clsColumn selectedCot = dtgColumn.SelectedItem as clsColumn;
+
+                    if (selectedCot != null)
+                    {
+                        txtName.Text = selectedCot.Name;
+                        txtDaiCot.Text = selectedCot.ChieuCao.ToString();
+                        txtTaiTrongchan.Text = selectedCot.LucDoc.ToString();
+                        txtTaiTrongdinh.Text = "0";
+                        txtMoMenchan.Text = selectedCot.MoMent.ToString();
+
+                        // ĐÃ SỬA: Chọn theo SelectedItem (vì ItemsSource bây giờ là danh sách chuỗi string)
+                        if (selectedCot.TietDien != null)
+                        {
+                            cbbTietDien.SelectedItem = selectedCot.TietDien.Name;
+                        }
+
+                        if (selectedCot.VatLieu != null)
+                        {
+                            cbbVatLieu.SelectedItem = selectedCot.VatLieu.TenVatLieu;
+                        }
+
+                        cbbLK.SelectedIndex = 0;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Có lỗi khi hiển thị thông số chi tiết: " + ex.Message, "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
         }
+
         // Hàm xử lý logic nhận lệnh từ nút bấm Nhập dữ liệu từ phần mềm ETABS
         public void XulyNhapTuEtab(object parameter)
         {
@@ -101,18 +134,29 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.Pages
                             ref T,
                             ref M2,
                             ref M3);
-                        double lucDoc = 0;
-                        double moment = 0;
+
+                        double lucDocChan = 0;
+                        double lucDocDinh = 0;
+                        double momentChan = 0;
 
                         if (retForce == 0 && NumberResults > 0)
                         {
+                            // Lấy vị trí mặt cắt cuối cùng làm mốc chiều dài thanh để xác định đỉnh cột
+                            double chieuDaiThanh = ElmSta[NumberResults - 1];
+
                             for (int i = 0; i < NumberResults; i++)
                             {
-                                if (Math.Abs(P[i]) > Math.Abs(lucDoc))
-                                    lucDoc = P[i];
-
-                                if (Math.Abs(M3[i]) > Math.Abs(moment))
-                                    moment = M3[i];
+                                // 1. Lấy nội lực tại vị trí Chân Cột (vị trí bằng 0)
+                                if (Math.Abs(ElmSta[i]) < 0.001)
+                                {
+                                    if (Math.Abs(P[i]) > Math.Abs(lucDocChan)) lucDocChan = P[i];
+                                    if (Math.Abs(M3[i]) > Math.Abs(momentChan)) momentChan = M3[i];
+                                }
+                                // 2. Lấy nội lực tại vị trí Đỉnh Cột (vị trí bằng chiều dài thanh)
+                                else if (Math.Abs(ElmSta[i] - chieuDaiThanh) < 0.001)
+                                {
+                                    if (Math.Abs(P[i]) > Math.Abs(lucDocDinh)) lucDocDinh = P[i];
+                                }
                             }
                         }
                         string point1 = "", point2 = "";
@@ -157,6 +201,35 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.Pages
                             frameName,
                             ref tenTietDien,
                             ref autoSelect);
+                        //==================== ĐỌC KÍCH THƯỚC TIẾT DIỆN ====================
+
+                        double h = 0;
+                        double b = 0;
+                        double tf = 0;
+                        double tw = 0;
+                        double t2b = 0;
+                        double tfb = 0;
+
+                        string fileName = "";
+                        string tenVatLieuTietDien = "";
+                        string notes = "";
+                        string guid = "";
+                        int color = 0;
+
+                        int retSection = mySapModel.PropFrame.GetISection(
+                            tenTietDien,
+                            ref fileName,
+                            ref tenVatLieuTietDien,
+                            ref h,
+                            ref b,
+                            ref tf,
+                            ref tw,
+                            ref t2b,
+                            ref tfb,
+                            ref color,
+                            ref notes,
+                            ref guid);
+
 
                         //==================== TIẾT DIỆN ====================
 
@@ -175,10 +248,10 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.Pages
                         {
                             tietDien = new clsTietDien(
                                 tenTietDien,
-                                0,
-                                0,
-                                0,
-                                0);
+                                b * 1000,
+                                tf * 1000,
+                                h * 1000,
+                                tw * 1000);
 
                             clsBienToanCuc.clsTietDien.Add(tietDien);
                         }
@@ -214,17 +287,17 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.Pages
 
                         //==================== TẠO CỘT ====================
 
+                        // Sử dụng hàm dựng (constructor) mới đã bổ sung thêm biến lực dọc đỉnh
                         clsColumn cot = new clsColumn(
                                  label,
                                  chieuCao,
                                  vatLieu,
                                  tietDien,
-                                 Math.Abs(lucDoc),
-                                 Math.Abs(moment),
+                                 Math.Abs(lucDocChan), // Lực dọc chân
+                                 Math.Abs(lucDocDinh), // Lực dọc đỉnh (Đã map vào thuộc tính mới)
+                                 Math.Abs(momentChan), // Momen chân
                                  story
                             );
-
-
 
                         clsBienToanCuc.clsColumn.Add(cot);
                     }
@@ -234,8 +307,36 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.Pages
                     page.dtgColumn.ItemsSource = null;
                     page.dtgColumn.ItemsSource = clsBienToanCuc.clsColumn;
 
+                    // Tietdien
+                    if (clsBienToanCuc.clsColumn != null && clsBienToanCuc.clsColumn.Count > 0)
+                    {
+                        // Tạo 2 danh sách phụ dạng chuỗi (string) để chứa tên tiết diện và vật liệu duy nhất
+                        System.Collections.Generic.List<string> dsTietDien = new System.Collections.Generic.List<string>();
+                        System.Collections.Generic.List<string> dsVatLieu = new System.Collections.Generic.List<string>();
+
+                        foreach (var c in clsBienToanCuc.clsColumn)
+                        {
+                            // Nếu cột có tiết diện và tên tiết diện này chưa có trong danh sách phụ thì mới thêm vào
+                            if (c.TietDien != null && !dsTietDien.Contains(c.TietDien.Name))
+                            {
+                                dsTietDien.Add(c.TietDien.Name);
+                            }
+
+                            // Tương tự với vật liệu
+                            if (c.VatLieu != null && !dsVatLieu.Contains(c.VatLieu.TenVatLieu))
+                            {
+                                dsVatLieu.Add(c.VatLieu.TenVatLieu);
+                            }
+                        }
+
+                        // Đổ dữ liệu đã lọc trùng vào ItemsSource của 2 ô ComboBox trên giao diện
+                        page.cbbTietDien.ItemsSource = dsTietDien;
+                        page.cbbVatLieu.ItemsSource = dsVatLieu;
+                    }
+
                     view3D?.ZoomExtents();
                 }
+
             }
             catch (Exception ex)
             {

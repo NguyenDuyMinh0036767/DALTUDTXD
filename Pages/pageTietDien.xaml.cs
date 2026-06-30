@@ -86,5 +86,73 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.Pages
 
             dtgTietDien.ItemsSource = list;
         }
+        private void dtgTietDien_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (dtgTietDien.SelectedItem == null)
+                return;
+
+            clsTietDien td = dtgTietDien.SelectedItem as clsTietDien;
+
+            if (td == null)
+                return;
+
+            txtName.Text = td.Name;
+            txtRongCanh.Text = td.ChieuRongCanh.ToString();
+            txtDayCanh.Text = td.DoDayCanh.ToString();
+            txtCaoBung.Text = td.ChieuCaoBung.ToString();
+            txtDayBung.Text = td.DoDayBung.ToString();
+
+            VeTietDien(td);
+        }
+        private void VeTietDien(clsTietDien td)
+        {
+            double B = td.ChieuRongCanh;
+            double tf = td.DoDayCanh;
+            double h = td.ChieuCaoBung;
+            double tw = td.DoDayBung;
+
+            double H = h + 2 * tf;
+
+            // Kích thước vùng vẽ
+            double canvasW = 200;
+            double canvasH = 300;
+
+            // Scale để tiết diện luôn vừa khung
+            double scale = Math.Min(
+                canvasW * 0.7 / B,
+                canvasH * 0.7 / H);
+
+            B *= scale;
+            tf *= scale;
+            h *= scale;
+            tw *= scale;
+
+            H = h + 2 * tf;
+
+            double cx = canvasW / 2;
+            double cy = canvasH / 2;
+
+            // Cánh trên
+            geoCanhTren.Rect = new Rect(
+                cx - B / 2,
+                cy - H / 2,
+                B,
+                tf);
+
+            // Bụng
+            geoBung.Rect = new Rect(
+                cx - tw / 2,
+                cy - H / 2 + tf,
+                tw,
+                h);
+
+            // Cánh dưới
+            geoCanhDuoi.Rect = new Rect(
+                cx - B / 2,
+                cy + H / 2 - tf,
+                B,
+                tf);
+        }
     }
+
 }

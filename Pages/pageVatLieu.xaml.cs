@@ -128,19 +128,7 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.Pages
                 CuongDoChiuKeo = "420 N/mm2"
             });
 
-            //Materials.Add(new Material
-            //{
-            //    TenVatLieu = "Bê tông B25",
-            //    MoDunDanHoi = "3.2E4 MPa",
-            //    CuongDoChiuKeo = "14.5 MPa"
-            //});
-
-            //Materials.Add(new Material
-            //{
-            //    TenVatLieu = "Bê tông B30",
-            //    MoDunDanHoi = "3.4E4 MPa",
-            //    CuongDoChiuKeo = "17.0 MPa"
-            //});
+        
         }
 
     }
