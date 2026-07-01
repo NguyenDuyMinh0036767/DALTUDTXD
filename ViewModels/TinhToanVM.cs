@@ -36,8 +36,8 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.ViewModels
             double daybung = Column.TietDien.DoDayBung;
             double N = Math.Abs(Convert.ToDouble(parameter.txtTaiTrong.Text)) ;
             //double L = Convert.ToDouble(parameter.txtDaiCot.Text);    
-            double f = Column.VatLieu.CuongDoChiuKeo;
-            double E = Column.VatLieu.MoDunDanHoi;
+            double f = Column.VatLieu.CuongDoTinhToanF;
+            double E = Column.VatLieu.MoDunDanHoiE;
             double gamaC = 1;
             double A = 2 * (daycanh * caocanh) + (daybung * caobung);
             ChuongTrinhCon chuongTrinhCon = new ChuongTrinhCon();

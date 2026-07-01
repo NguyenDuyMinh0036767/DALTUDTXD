@@ -41,8 +41,8 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.Pages
 
                 // 1. Đọc tải trọng (Giữ nguyên dấu) và thông số cơ lý vật liệu giống hệt pageTinhToan
                 double N = column.LucDoc;
-                double f = vl.CuongDoChiuKeo;
-                double E = vl.MoDunDanHoi;
+                double f = vl.CuongDoTinhToanF;
+                double E = vl.MoDunDanHoiE;
                 double gamaC = 1.1; // ĐỒNG BỘ: Sửa từ 1.0 thành 1.1 cho khớp với tab tính toán
 
                 // 2. Kích thước hình học cấu kiện
