@@ -115,7 +115,7 @@
 
                     <helix:DefaultLights/>
 
-                    <helix:GridLinesVisual3D Width="100" Length="120" MajorDistance="10" MinorDistance="2" Thickness="1"/>
+                    <helix:GridLinesVisual3D Width="450" Length="450" MajorDistance="10" MinorDistance="10" Thickness="0.1" Fill="Blue"/>
 
                     <ModelVisual3D x:Name="modelContainer" />
 
