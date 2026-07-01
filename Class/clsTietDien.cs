@@ -66,6 +66,31 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.Class
             double dienTichBung = ChieuCaoBung * DoDayBung;
             return 2 * dienTichCanh + dienTichBung;
         }
+        public double TinhIx()
+        {
+            double H = ChieuCaoBung + 2 * DoDayCanh;
+
+            return (ChieuRongCanh * Math.Pow(H, 3)
+                - (ChieuRongCanh - DoDayBung) * Math.Pow(ChieuCaoBung, 3))
+                / 12.0;
+        }
+
+        public double TinhIy()
+        {
+            return (2 * DoDayCanh * Math.Pow(ChieuRongCanh, 3)
+                + ChieuCaoBung * Math.Pow(DoDayBung, 3))
+                / 12.0;
+        }
+
+        public double Tinhix()
+        {
+            return Math.Sqrt(TinhIx() / TinhDienTichTietDien());
+        }
+
+        public double Tinhiy()
+        {
+            return Math.Sqrt(TinhIy() / TinhDienTichTietDien());
+        }
         public bool XacThucTietDien()
         {
             if (ChieuCaoBung > 0 && ChieuRongCanh > 0 && DoDayBung > 0 && DoDayCanh > 0)

@@ -175,15 +175,26 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.Pages
 
             ChuongTrinhCon ct = new ChuongTrinhCon();
             double N = double.Parse(txtTaiTrong.Text);
-            double Lamda = double.Parse(txtDaiCot.Text);
+            double L = double.Parse(txtDaiCot.Text) * 1000.0;   // đổi m → mm
 
             clsTietDien td = clsBienToanCuc.clsTietDien.First(x => x.Name == cbbTietDien.Text);
             clsVatLieuThep vl = clsBienToanCuc.clsVatLieu.First(x => x.TenVatLieu == cbbVatLieu.Text);
 
             double A = td.TinhDienTichTietDien();
+            double Ix = td.TinhIx();
+            double Iy = td.TinhIy();
+
+            double ix = Math.Sqrt(Ix / A);
+            double iy = Math.Sqrt(Iy / A);
+
+            // lấy bán kính quán tính nhỏ hơn
+            double imin = Math.Min(ix, iy);
+
+            // độ mảnh của cột
+            double Lamda = L / imin;
             double hw = td.ChieuCaoBung;
             double tw = td.DoDayBung;
-            double bo = td.ChieuRongCanh / 2.0;
+            double bo = (td.ChieuRongCanh - td.DoDayBung) / 2.0;
             double tf = td.DoDayCanh;
 
             double f = vl.CuongDoChiuKeo;
@@ -194,6 +205,7 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.Pages
             bool ktODTT = ct.TinhToanOnDinhTongThe(N, A, f, gamaC, Lamda, E);
             bool ktODCB = ct.TinhToanOnDinhCucBo(hw, tw, Lamda, f, E, bo, tf);
             double knChiuNen = ct.TTKhaNangChiuNenLechtam(N, f, gamaC, A, Lamda, E);
+
 
             lblKTB.Content = ktBen ? "ĐẠT" : "KHÔNG ĐẠT";
             lblKTODTH.Content = ktODTT ? "ĐẠT" : "KHÔNG ĐẠT";

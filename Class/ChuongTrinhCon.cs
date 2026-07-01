@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace HUCE_DALTUD_LOPNV90_2026_0053867.Class
 {
@@ -29,16 +30,34 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.Class
             return false;
         }
 
-        public bool TinhToanOnDinhCucBo(double hw, double tw, double Lamda, double f, double E, double bo, double tf)
+        public bool TinhToanOnDinhCucBo(double hw,
+                                double tw,
+                                double Lamda,
+                                double f,
+                                double E,
+                                double bo,
+                                double tf)
         {
-            double domanhquyuoc = Lamda * Math.Sqrt(f / E);
-            double domanhgioihanchophep = TTDoManhGioiHan(Lamda, f, E);
-            double doManhGHBanNho = (0.36 + 0.1 * domanhquyuoc) * Math.Sqrt(E / f);
-            if (hw / tw <= domanhgioihanchophep && bo / tf <= doManhGHBanNho)
-            {
-                return true;
-            }
-            return false;
+            // Độ mảnh quy ước
+            double lambda0 = Lamda * Math.Sqrt(f / E);
+
+            // Giới hạn bản bụng
+            double gioiHanBung;
+
+            if (lambda0 <= 2)
+                gioiHanBung = (1.30 + 0.15 * lambda0 * lambda0) * Math.Sqrt(E / f);
+            else
+                gioiHanBung = (1.20 + 0.35 * lambda0) * Math.Sqrt(E / f);
+
+            // Giới hạn bản cánh
+            double gioiHanCanh = (0.36 + 0.10 * lambda0) * Math.Sqrt(E / f);
+
+            // Tỷ số thực tế
+            double tySoBung = hw / tw;
+            double tySoCanh = bo / tf;
+
+            return (tySoBung <= gioiHanBung &&
+                    tySoCanh <= gioiHanCanh);
         }
 
         public double TTDoManhGioiHan(double Lamda, double f, double E)
@@ -55,48 +74,41 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.Class
             return 0;
         }
 
-        public double TTKhaNangChiuNenLechtam(double N, double f, double gamaC, double A, double Lamda, double E)
+        public double TTKhaNangChiuNenLechtam(double N, double f, double gamaC,
+                                     double A, double Lamda, double E)
         {
-            double KNTheoDKBen = A * f * gamaC;
             double hsUonDoc = TinhPhiMin(Lamda, f, E);
+
+            double KNTheoDKBen = A * f * gamaC;
             double KNTheoOnDinhTongThe = hsUonDoc * A * f * gamaC;
-            if (KNTheoDKBen < KNTheoOnDinhTongThe)
-            {
-                return KNTheoDKBen;
-            }
-            else if (KNTheoDKBen > KNTheoOnDinhTongThe)
-            {
-                return KNTheoOnDinhTongThe;
-            }
-            return 0;
+
+            return Math.Min(KNTheoDKBen, KNTheoOnDinhTongThe) / 1000.0; // đổi sang kN
         }
 
-        public double DoManh(double tBanCanh, double tBanBung, double hBanCanh, double hBanBung)
+        public double TinhLambda(double L, double i)
         {
-            double Ix = (hBanCanh * Math.Pow((hBanBung + tBanCanh * 2), 3) - (hBanCanh - tBanBung) * Math.Pow(hBanBung, 3)) / 12;
-            double Iy = (2 * tBanCanh * Math.Pow(hBanCanh, 3) + hBanBung * Math.Pow(tBanBung, 3)) / 12;
-            double A = 2 * (tBanCanh * hBanCanh) + (tBanBung * hBanBung);
-            double lamdaX = Math.Sqrt(Ix / A);
-            double lamdaY = Math.Sqrt(Iy / A);
-            return Math.Max(lamdaX, lamdaY);
+            return L / i;
         }
 
         public double TinhPhiMin(double Lamda, double f, double E)
         {
-            double domanhquyuoc = Lamda * Math.Sqrt(f / E);
-            if (0 < domanhquyuoc && domanhquyuoc <= 2.5)
-            {
-                return 1 - (0.073 - 5.53 * f / E);
-            }
-            else if (2.5 < domanhquyuoc && domanhquyuoc <= 4.5)
-            {
-                return 1.47 - 13 * f / E - (0.371 - 27.3 * f / E) * domanhquyuoc + (0.0275 - 5.53f / E) * Math.Pow(domanhquyuoc, 2);
-            }
-            else if (domanhquyuoc > 4.5)
-            {
-                return 332 / Math.Pow(domanhquyuoc, 2) * (51 - domanhquyuoc);
-            }
-            return 0;
+            double lambdaBar = Lamda * Math.Sqrt(f / E);
+
+            double phi;
+
+            if (lambdaBar <= 0.2)
+                phi = 1;
+
+            else if (lambdaBar <= 1.0)
+                phi = 1 - 0.25 * (lambdaBar - 0.2);
+
+            else if (lambdaBar <= 2.0)
+                phi = 0.8 - 0.25 * (lambdaBar - 1.0);
+
+            else
+                phi = 0.55 / (1 + 0.15 * (lambdaBar - 2));
+
+            return phi;
         }
     }
 }

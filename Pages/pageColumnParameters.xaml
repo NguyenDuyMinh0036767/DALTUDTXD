@@ -10,7 +10,17 @@
           DataContext="{StaticResource CLParameterVM}"
           d:DesignHeight="600" d:DesignWidth="1100"
           Title="pageColumnParameters" Background="#DDDDDD">
-
+    <Page.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Padding" Value="3,0,0,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+    </Page.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="65*" />
@@ -33,7 +43,7 @@
                     <StackPanel Grid.Column="0" Margin="10,5,10,0">
                         <StackPanel Orientation="Horizontal" Margin="0,4">
                             <TextBlock VerticalAlignment="Center" FontWeight="Bold" Text="Tên cột:" Width="110"/>
-                            <TextBox Name="txtName" Width="150" Height="28" Background="White"/>
+                            <TextBox Name="txtName" Width="150" Height="28" Background="White" VerticalContentAlignment="Center"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,4">
                             <TextBlock VerticalAlignment="Center" FontWeight="Bold" Text="Chọn tiết diện:" Width="110"/>

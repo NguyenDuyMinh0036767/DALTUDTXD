@@ -17,6 +17,13 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        <TextBlock x:Name="txtTrangThai"
+           Grid.Row="1"
+           Margin="10,5"
+           FontSize="14"
+           FontWeight="Bold"
+           Foreground="DodgerBlue"
+           Text="Đang làm việc: Trang chủ"/>
 
         <Ribbon x:Name="rbncontrol"
                 Background="#F3F3F3"

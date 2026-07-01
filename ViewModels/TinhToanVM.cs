@@ -41,7 +41,15 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.ViewModels
             double gamaC = 1;
             double A = 2 * (daycanh * caocanh) + (daybung * caobung);
             ChuongTrinhCon chuongTrinhCon = new ChuongTrinhCon();
-            double DoManhLamDa = chuongTrinhCon.DoManh(daycanh, daybung, caocanh, caobung);
+            double ix = Column.TietDien.Tinhix();
+            double iy = Column.TietDien.Tinhiy();
+
+            double L = Column.ChieuCao * 1000.0;
+
+            double lambdaX = L / ix;
+            double lambdaY = L / iy;
+
+            double DoManhLamDa = Math.Max(lambdaX, lambdaY);
 
             parameter.lblKTB.Content = chuongTrinhCon.TinhToanBen(N, A, f, gamaC) ? "Thỏa Mãn" : "Không Thỏa Mãn";
 
