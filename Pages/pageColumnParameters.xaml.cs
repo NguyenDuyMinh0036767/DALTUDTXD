@@ -3,6 +3,7 @@ using HelixToolkit.Wpf;
 using HUCE_DALTUD_LOPNV90_2026_0053867.Class;
 using HUCE_DALTUD_LOPNV90_2026_0053867.KetNoiEtabs;
 using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Media3D;
@@ -15,6 +16,13 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.Pages
         public pageColumnParameters()
         {
             InitializeComponent();
+
+            cbbVatLieu.ItemsSource = clsBienToanCuc.clsVatLieu;
+            cbbVatLieu.DisplayMemberPath = "TenVatLieu";
+            cbbVatLieu.SelectionChanged += cbbVatLieu_SelectionChanged;
+
+            if (clsBienToanCuc.clsVatLieu.Count > 0)
+                cbbVatLieu.SelectedIndex = 0;
         }
 
         // ĐÃ THÊM: Định nghĩa hàm LoadDL ở chế độ public để file ViewModel gọi được
@@ -49,7 +57,7 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.Pages
 
                         if (selectedCot.VatLieu != null)
                         {
-                            cbbVatLieu.SelectedItem = selectedCot.VatLieu.TenVatLieu;
+                            cbbVatLieu.SelectedItem = selectedCot.VatLieu;
                         }
 
                         cbbLK.SelectedIndex = 0;
@@ -278,18 +286,30 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.Pages
 
                         if (vatLieu == null)
                         {
-                            double fy = 235;      // MPa
-                            double E = 210000;    // MPa
+                            // ĐÃ SỬA LOGIC: Tra cứu cường độ f và mô-đun E thực tế từ danh sách đã lưu ở trang Vật Liệu
+                            var vatLieuDaLuu =
+                                                clsBienToanCuc.clsVatLieu.FirstOrDefault(x =>
+                                                x.TenVatLieu.Equals(tenVatLieu,
+                                                StringComparison.OrdinalIgnoreCase));
 
-                            // Nếu dùng thép Q345 thì đổi:
-                            // fy = 345;
+                            double fy = 235;   // Giá trị mặc định nếu ETABS trả về mác thép lạ không có trong danh sách
+                            double E = 210000; // Giá trị mặc định
+
+                            if (vatLieuDaLuu != null)
+                            {
+                                fy = vatLieuDaLuu.CuongDoTinhToanF; // Lấy đúng cường độ f bạn nhập từ bảng vật liệu
+                                E = vatLieuDaLuu.MoDunDanHoiE;      // Lấy đúng mô-đun đàn hồi E bạn nhập từ bảng vật liệu
+                            }
 
                             vatLieu = new clsVatLieuThep(
                                 tenVatLieu,
                                 fy,
                                 E);
 
-                            clsBienToanCuc.clsVatLieu.Add(vatLieu);
+                            if (!clsBienToanCuc.clsVatLieu.Any(x => x.TenVatLieu == vatLieu.TenVatLieu))
+                            {
+                                clsBienToanCuc.clsVatLieu.Add(vatLieu);
+                            }
                         }
 
                         //==================== TẠO CỘT ====================
@@ -339,7 +359,9 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.Pages
 
                         // Đổ dữ liệu đã lọc trùng vào ItemsSource của 2 ô ComboBox trên giao diện
                         page.cbbTietDien.ItemsSource = dsTietDien;
-                        page.cbbVatLieu.ItemsSource = dsVatLieu;
+                        page.cbbVatLieu.ItemsSource = null;
+                        page.cbbVatLieu.ItemsSource = clsBienToanCuc.clsVatLieu;
+                        page.cbbVatLieu.DisplayMemberPath = "TenVatLieu";
                     }
 
                     view3D?.ZoomExtents();
@@ -350,6 +372,18 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.Pages
             {
                 MessageBox.Show("Lỗi kết nối ETABS API: " + ex.Message);
             }
+        }
+        private void cbbVatLieu_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            clsVatLieuThep vl = cbbVatLieu.SelectedItem as clsVatLieuThep;
+
+            if (vl == null)
+                return;
+
+            double fy = vl.CuongDoTinhToanF;
+            double E = vl.MoDunDanHoiE;
+
+            // Sau này bạn dùng fy và E để tính toán
         }
     }
 }

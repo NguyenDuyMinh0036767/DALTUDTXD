@@ -36,7 +36,10 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.Pages
                     txtDaiCot.Text = column.ChieuCao.ToString();
                     txtTaiTrong.Text = column.LucDoc.ToString();
                     cbbTietDien.Text = column.TietDien.Name;
-                    cbbVatLieu.Text = column.VatLieu.TenVatLieu;
+                    cbbVatLieu.SelectedItem = column.VatLieu;
+                    cbbVatLieu.SelectionChanged -= cbbVatLieu_SelectionChanged;
+                    cbbVatLieu.SelectedItem = column.VatLieu;
+                    cbbVatLieu.SelectionChanged += cbbVatLieu_SelectionChanged;
 
                     // Vẽ lại mặt cắt khi chọn cột
                     VeMatCatTietDien(column.TietDien.Name);
@@ -48,10 +51,10 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.Pages
 
         private void cbbTietDien_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cbbTietDien.SelectedItem is string selectedTietDienName)
-            {
-                VeMatCatTietDien(selectedTietDienName);
-            }
+            if (cbbTietDien.SelectedItem == null) return;
+
+            VeMatCatTietDien(cbbTietDien.SelectedItem as string);
+            TinhVaHienKetQua();
         }
 
         public void LoadDL()
@@ -63,18 +66,9 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.Pages
             }
             cbbCotCanTinh.ItemsSource = listcl;
 
-            List<clsVatLieuThep> listvl = new List<clsVatLieuThep>();
-            HashSet<string> tenVatLieuDaCo = new HashSet<string>();
-
-            foreach (clsVatLieuThep vatLieuThep in clsBienToanCuc.clsVatLieu)
-            {
-                if (!tenVatLieuDaCo.Contains(vatLieuThep.TenVatLieu))
-                {
-                    tenVatLieuDaCo.Add(vatLieuThep.TenVatLieu);
-                    listvl.Add(vatLieuThep);
-                }
-            }
-            cbbVatLieu.ItemsSource = tenVatLieuDaCo;
+            cbbVatLieu.ItemsSource = clsBienToanCuc.clsVatLieu;
+            cbbVatLieu.DisplayMemberPath = "TenVatLieu";
+            
 
             List<clsTietDien> listtd = new List<clsTietDien>();
             HashSet<string> tenTDDaCo = new HashSet<string>();
@@ -171,14 +165,19 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.Pages
 
         private void TinhVaHienKetQua()
         {
-            if (string.IsNullOrEmpty(cbbTietDien.Text) || string.IsNullOrEmpty(cbbVatLieu.Text)) return;
+            if (cbbTietDien.SelectedItem == null || cbbVatLieu.SelectedItem == null)
+                return;
 
             ChuongTrinhCon ct = new ChuongTrinhCon();
             double N = double.Parse(txtTaiTrong.Text);
             double L = double.Parse(txtDaiCot.Text) * 1000.0;   // đổi m → mm
 
-            clsTietDien td = clsBienToanCuc.clsTietDien.First(x => x.Name == cbbTietDien.Text);
-            clsVatLieuThep vl = clsBienToanCuc.clsVatLieu.First(x => x.TenVatLieu == cbbVatLieu.Text);
+            string tdName = cbbTietDien.SelectedItem as string;
+
+            clsTietDien td = clsBienToanCuc.clsTietDien
+                .First(x => x.Name == tdName);
+            clsVatLieuThep vl = cbbVatLieu.SelectedItem as clsVatLieuThep;
+            if (vl == null) return;
 
             double A = td.TinhDienTichTietDien();
             double Ix = td.TinhIx();
@@ -197,8 +196,8 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.Pages
             double bo = (td.ChieuRongCanh - td.DoDayBung) / 2.0;
             double tf = td.DoDayCanh;
 
-            double f = vl.CuongDoChiuKeo;
-            double E = vl.MoDunDanHoi;
+            double f = vl.CuongDoTinhToanF;
+            double E = vl.MoDunDanHoiE;
             double gamaC = 1.1;
 
             bool ktBen = ct.TinhToanBen(N, A, f, gamaC);
@@ -215,6 +214,27 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.Pages
             lblKTB.Foreground = ktBen ? Brushes.Green : Brushes.Red;
             lblKTODTH.Foreground = ktODTT ? Brushes.Green : Brushes.Red;
             lblKTODCB.Foreground = ktODCB ? Brushes.Green : Brushes.Red;
+            
+        }
+        private void cbbVatLieu_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!IsLoaded) return;
+
+            var vl = cbbVatLieu.SelectedItem as clsVatLieuThep;
+            if (vl == null) return;
+
+            string selectedColumnName = cbbCotCanTinh.SelectedItem as string;
+            if (string.IsNullOrEmpty(selectedColumnName)) return;
+
+            var column = clsBienToanCuc.clsColumn
+                .FirstOrDefault(x => x.Name == selectedColumnName);
+
+            if (column == null) return;
+
+            // update dữ liệu gốc
+            column.VatLieu = vl;
+
+            TinhVaHienKetQua();
         }
     }
 }
