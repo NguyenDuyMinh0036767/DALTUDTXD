@@ -9,30 +9,33 @@
       Title="pageTinhToan" Background="#DDDDDD">
 
     <Grid Margin="10">
-
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="280"/>
         </Grid.ColumnDefinitions>
-        <!-- Tiêu đề -->
+
         <TextBlock Grid.ColumnSpan="3" Text="Phần mềm tính toán cột thép chữ I" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,10,0,20"/>
 
-        <!-- Khu vực nhập liệu -->
         <GroupBox Header="Thông số tiết diện" Grid.Column="0" Margin="0,40,10,60">
-            <StackPanel Margin="10 0 10 0">
+            <StackPanel Margin="10,0,10,0">
                 <Label>Chọn cột cần tính</Label>
                 <ComboBox SelectionChanged="sl" x:Name="cbbCotCanTinh" Background="White" />
-                <Label Margin="0 10 0 0">Chọn tiết diện cột</Label>
-                <ComboBox x:Name="cbbTietDien" Background="White" />
-                <TextBlock Text="Tải trọng (N):" Margin="0 10 0 0"/>
+
+                <Label Margin="0,10,0,0">Chọn tiết diện cột</Label>
+                <ComboBox x:Name="cbbTietDien" Background="White" SelectionChanged="cbbTietDien_SelectionChanged" />
+
+                <TextBlock Text="Tải trọng (N):" Margin="0,10,0,0"/>
                 <TextBox Name="txtTaiTrong" Background="White"/>
-                <TextBlock Text="Chiều dài cột (L):" Margin="0 10 0 0" />
+
+                <TextBlock Text="Chiều dài cột (L):" Margin="0,10,0,0" />
                 <TextBox Name="txtDaiCot" Background="White"/>
-                <TextBlock Text="Chọn vật liệu:" Margin="0 10 0 0"/>
+
+                <TextBlock Text="Chọn vật liệu:" Margin="0,10,0,0"/>
                 <ComboBox Name="cbbVatLieu" Background="White"/>
-                <TextBlock Text="Liên kết chân cột:" Margin="0 10 0 0"/>
-                <ComboBox Name="cbbLK" Margin="0 5 0 0" Background="White">
+
+                <TextBlock Text="Liên kết chân cột:" Margin="0,10,0,0"/>
+                <ComboBox Name="cbbLK" Margin="0,5,0,0" Background="White">
                     <ComboBoxItem IsSelected="True">Ngàm</ComboBoxItem>
                     <ComboBoxItem>Gối cố định</ComboBoxItem>
                     <ComboBoxItem>Gối di động</ComboBoxItem>
@@ -40,222 +43,112 @@
                 </ComboBox>
             </StackPanel>
         </GroupBox>
-        <StackPanel Grid.Column="1"
-            VerticalAlignment="Center"
-            HorizontalAlignment="Center">
 
+        <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
             <UniformGrid Columns="2" Width="400" Height="400">
-
-                <!--  CỘT CHÂN KHỚP  -->
                 <StackPanel>
-                    <TextBlock Text="CỘT CHÂN KHỚP"
-                       FontWeight="Bold"
-                       HorizontalAlignment="Center"
-                       Margin="0,0,0,5"/>
-
+                    <TextBlock Text="CỘT CHÂN KHỚP" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,5"/>
                     <Viewbox Stretch="Uniform">
                         <Canvas Width="250" Height="350" Background="Gray">
-
-                            <!-- Trục cột -->
-                            <Line X1="120" Y1="40" X2="120" Y2="300"
-                                Stroke="Red"/>
-
-                            <!-- Biểu đồ mô men -->
-                            <Polygon Points="120,40 200,40 120,300"
-                                Stroke="Red"
-                                StrokeThickness="2"
-                                Fill="Transparent"/>
-
-                            <!-- Trục đo -->
-                            <Line X1="60" Y1="40" X2="60" Y2="300"
-                                Stroke="White"/>
-
-                            <!-- Chia H/3 -->
+                            <Line X1="120" Y1="40" X2="120" Y2="300" Stroke="Red"/>
+                            <Polygon Points="120,40 200,40 120,300" Stroke="Red" StrokeThickness="2" Fill="Transparent"/>
+                            <Line X1="60" Y1="40" X2="60" Y2="300" Stroke="White"/>
                             <Line X1="55" Y1="40" X2="65" Y2="40" Stroke="White"/>
                             <Line X1="55" Y1="127" X2="65" Y2="127" Stroke="White"/>
                             <Line X1="55" Y1="213" X2="65" Y2="213" Stroke="White"/>
                             <Line X1="55" Y1="300" X2="65" Y2="300" Stroke="White"/>
-
-                            <!-- H/3 text -->
-                            <TextBlock Text="H/3" Foreground="Lime"
-                                   Canvas.Left="30" Canvas.Top="80"
-                                   RenderTransformOrigin="0.5,0.5">
+                            <TextBlock Text="H/3" Foreground="Lime" Canvas.Left="30" Canvas.Top="80" RenderTransformOrigin="0.5,0.5">
                                 <TextBlock.RenderTransform>
                                     <RotateTransform Angle="-90"/>
                                 </TextBlock.RenderTransform>
                             </TextBlock>
-
-                            <TextBlock Text="H/3" Foreground="Lime"
-                                   Canvas.Left="30" Canvas.Top="160"
-                                   RenderTransformOrigin="0.5,0.5">
+                            <TextBlock Text="H/3" Foreground="Lime" Canvas.Left="30" Canvas.Top="160" RenderTransformOrigin="0.5,0.5">
                                 <TextBlock.RenderTransform>
                                     <RotateTransform Angle="-90"/>
                                 </TextBlock.RenderTransform>
                             </TextBlock>
-
-                            <TextBlock Text="H/3" Foreground="Lime"
-                                   Canvas.Left="30" Canvas.Top="240"
-                                   RenderTransformOrigin="0.5,0.5">
+                            <TextBlock Text="H/3" Foreground="Lime" Canvas.Left="30" Canvas.Top="240" RenderTransformOrigin="0.5,0.5">
                                 <TextBlock.RenderTransform>
                                     <RotateTransform Angle="-90"/>
                                 </TextBlock.RenderTransform>
                             </TextBlock>
-
-                            <!--  PHẦN TÔ TRẮNG: HÌNH THANG (H/3 THỨ 2)  -->
-                            <Polygon Fill="White" Opacity="0.9"
-                                 Points="
-                                 120,127
-                                 173,127
-                                 147,213
-                                 120,213"/>
-
-                            <!-- Chú thích -->
-                            <TextBlock Text="M đỉnh cột"
-                                   Foreground="White"
-                                   Canvas.Left="140"
-                                   Canvas.Top="20"/>
-
-                            <TextBlock Text="M 2/3"
-                                   Foreground="White"
-                                   Canvas.Left="185"
-                                   Canvas.Top="120"/>
-
-                            <TextBlock Text="M 1/3"
-                                   Foreground="White"
-                                   Canvas.Left="185"
-                                   Canvas.Top="240"/>
-
+                            <Polygon Fill="White" Opacity="0.9" Points="120,127 173,127 147,213 120,213"/>
+                            <TextBlock Text="M đỉnh cột" Foreground="White" Canvas.Left="140" Canvas.Top="20"/>
+                            <TextBlock Text="M 2/3" Foreground="White" Canvas.Left="185" Canvas.Top="120"/>
+                            <TextBlock Text="M 1/3" Foreground="White" Canvas.Left="185" Canvas.Top="240"/>
                         </Canvas>
                     </Viewbox>
                 </StackPanel>
 
-                <!--  CỘT CHÂN NGÀM  -->
                 <StackPanel>
-                    <TextBlock Text="CỘT CHÂN NGÀM"
-                       FontWeight="Bold"
-                       HorizontalAlignment="Center"
-                       Margin="0,0,0,5"/>
-
+                    <TextBlock Text="CỘT CHÂN NGÀM" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,5"/>
                     <Viewbox Stretch="Uniform">
                         <Canvas Width="250" Height="350" Background="Gray">
-
-                            <!-- Trục cột -->
-                            <Line X1="120" Y1="40" X2="120" Y2="300"
-                                Stroke="Red"/>
-
-                            <!-- Biểu đồ mô men -->
-                            <Polygon Points="120,40 210,40 120,185"
-                                 Stroke="Red"
-                                 StrokeThickness="2"
-                                 Fill="Transparent"/>
-
-                            <Polygon Points="120,185 70,300 120,300"
-                                 Stroke="Red"
-                                 StrokeThickness="2"
-                                 Fill="Transparent"/>
-
-                            <!-- Trục đo -->
-                            <Line X1="50" Y1="40" X2="50" Y2="300"
-                                Stroke="White"/>
-
-                            <!-- Chia H/3 -->
+                            <Line X1="120" Y1="40" X2="120" Y2="300" Stroke="Red"/>
+                            <Polygon Points="120,40 210,40 120,185" Stroke="Red" StrokeThickness="2" Fill="Transparent"/>
+                            <Polygon Points="120,185 70,300 120,300" Stroke="Red" StrokeThickness="2" Fill="Transparent"/>
+                            <Line X1="50" Y1="40" X2="50" Y2="300" Stroke="White"/>
                             <Line X1="45" Y1="40" X2="55" Y2="40" Stroke="White"/>
                             <Line X1="45" Y1="127" X2="55" Y2="127" Stroke="White"/>
                             <Line X1="45" Y1="213" X2="55" Y2="213" Stroke="White"/>
                             <Line X1="45" Y1="300" X2="55" Y2="300" Stroke="White"/>
-
-                            <!-- H/3 text -->
-                            <TextBlock Text="H/3" Foreground="Lime"
-                                   Canvas.Left="20" Canvas.Top="80"
-                                   RenderTransformOrigin="0.5,0.5">
+                            <TextBlock Text="H/3" Foreground="Lime" Canvas.Left="20" Canvas.Top="80" RenderTransformOrigin="0.5,0.5">
                                 <TextBlock.RenderTransform>
                                     <RotateTransform Angle="-90"/>
                                 </TextBlock.RenderTransform>
                             </TextBlock>
-
-                            <TextBlock Text="H/3" Foreground="Lime"
-                                   Canvas.Left="20" Canvas.Top="160"
-                                   RenderTransformOrigin="0.5,0.5">
+                            <TextBlock Text="H/3" Foreground="Lime" Canvas.Left="20" Canvas.Top="160" RenderTransformOrigin="0.5,0.5">
                                 <TextBlock.RenderTransform>
                                     <RotateTransform Angle="-90"/>
                                 </TextBlock.RenderTransform>
                             </TextBlock>
-
-                            <TextBlock Text="H/3" Foreground="Lime"
-                                   Canvas.Left="20" Canvas.Top="240"
-                                   RenderTransformOrigin="0.5,0.5">
+                            <TextBlock Text="H/3" Foreground="Lime" Canvas.Left="20" Canvas.Top="240" RenderTransformOrigin="0.5,0.5">
                                 <TextBlock.RenderTransform>
                                     <RotateTransform Angle="-90"/>
                                 </TextBlock.RenderTransform>
                             </TextBlock>
-
-                            <!--  PHẦN TÔ TRẮNG: 2 TAM GIÁC ĐỐI ĐỈNH  -->
-                            <Polygon Fill="White" Opacity="0.9"
-                                 Points="
-                                 120,127
-                                 158,127
-                                 120,185"/>
-
-                            <Polygon Fill="White" Opacity="0.9"
-                                 Points="
-                                 120,185
-                                 108,213
-                                 120,213"/>
-
-                            <!-- Chú thích -->
-                            <TextBlock Text="M đỉnh cột"
-                               Foreground="White"
-                               Canvas.Left="140"
-                               Canvas.Top="20"/>
-
-                            <TextBlock Text="M 2/3"
-                               Foreground="White"
-                               Canvas.Left="170"
-                               Canvas.Top="110"/>
-
-                            <TextBlock Text="M chân cột"
-                               Foreground="White"
-                               Canvas.Left="145"
-                               Canvas.Top="305"/>
-                            <TextBlock Text="M 1/3"
-                                Foreground="White"
-                                Canvas.Left="185"
-                                Canvas.Top="240" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-
+                            <Polygon Fill="White" Opacity="0.9" Points="120,127 158,127 120,185"/>
+                            <Polygon Fill="White" Opacity="0.9" Points="120,185 108,213 120,213"/>
+                            <TextBlock Text="M đỉnh cột" Foreground="White" Canvas.Left="140" Canvas.Top="20"/>
+                            <TextBlock Text="M 2/3" Foreground="White" Canvas.Left="170" Canvas.Top="110"/>
+                            <TextBlock Text="M chân cột" Foreground="White" Canvas.Left="145" Canvas.Top="305"/>
+                            <TextBlock Text="M 1/3" Foreground="White" Canvas.Left="185" Canvas.Top="240" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Canvas>
                     </Viewbox>
                 </StackPanel>
-
             </UniformGrid>
         </StackPanel>
 
-
-        <!-- Khu vực kết quả -->
-        <GroupBox Grid.Column="2" Header="Kết Quả" Margin="5,40,5,20" HorizontalAlignment="Center">
+        <GroupBox Grid.Column="2" Header="Kết Quả" Margin="5,40,5,220" HorizontalAlignment="Stretch">
             <StackPanel Margin="10">
-                <StackPanel Orientation="Horizontal" Margin="0 0 0 0">
+                <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Kiểm tra bền:"/>
-                    <Label Name="lblKTB" Width="100" Margin="10 0 0 0"/>
+                    <Label Name="lblKTB" Width="100" Margin="10,0,0,0"/>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                     <TextBlock Text="Kiểm tra ổn định tổng thể:"/>
-                    <Label Name="lblKTODTH" Width="100" Margin="10 0 0 0"/>
+                    <Label Name="lblKTODTH" Width="100" Margin="10,0,0,0"/>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                     <TextBlock Text="Kiểm tra ổn định cục bộ:"/>
-                    <Label Name="lblKTODCB" Width="100" Margin="10 0 0 0"/>
+                    <Label Name="lblKTODCB" Width="100" Margin="10,0,0,0"/>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                     <TextBlock Text="Khả năng chịu nén:"/>
-                    <Label Name="lblKNCN" Width="100" Margin="10 0 0 0"/>
+                    <Label Name="lblKNCN" Width="100" Margin="10,0,0,0"/>
                 </StackPanel>
             </StackPanel>
         </GroupBox>
 
-        <!-- Khu vực nút tính toán -->
+        <GroupBox Header="Hình dáng tiết diện chữ I" Grid.Column="2" VerticalAlignment="Top" Height="435" Margin="5,200,5,0">
+            <Viewbox Stretch="Uniform">
+                <Canvas x:Name="canvasTietDien" Width="200" Height="300" Background="#F5F5F5">
+                </Canvas>
+            </Viewbox>
+        </GroupBox>
+
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="74,0,0,86" Grid.Column="1" Height="100">
-            <Button Command="{Binding cmTinhToan}" CommandParameter="{Binding ElementName=pgTinhToan}" Name="btnTinhToan" Content="Tính toán" Width="120" Height="50" Margin="10" Background="#00FF00" Foreground="Black
-"/>
+            <Button Command="{Binding cmTinhToan}" CommandParameter="{Binding ElementName=pgTinhToan}" Name="btnTinhToan" Content="Tính toán" Width="120" Height="50" Margin="10" Background="#00FF00" Foreground="Black"/>
             <Button Name="ClearButton" Content="Xóa dữ liệu" Width="120" Margin="10" Height="50" Background="#FF0000" Foreground="Black"/>
         </StackPanel>
     </Grid>

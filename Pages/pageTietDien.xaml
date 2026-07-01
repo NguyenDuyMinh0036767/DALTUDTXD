@@ -20,7 +20,11 @@
 
         <Border Grid.Row="1" Grid.Column="1" Background="White" CornerRadius="5" Margin="10,0,10,90" BorderBrush="#BBBBBB" BorderThickness="1">
             <Grid>
-                <Canvas HorizontalAlignment="Center" VerticalAlignment="Center" Width="200" Height="300">
+                <Canvas x:Name="cvTietDien"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Width="200"
+                        Height="300">
                     <Canvas.RenderTransform>
                         <ScaleTransform ScaleX="0.5" ScaleY="0.5" CenterX="100" CenterY="150"/>
                     </Canvas.RenderTransform>
@@ -81,7 +85,11 @@
             </StackPanel>
 
             <GroupBox Header="Danh sách vật liệu đã lưu" Margin="10">
-                <DataGrid Name="dtgTietDien" AutoGenerateColumns="False" ItemsSource="{Binding clsTietDien}" IsReadOnly="True">
+                <DataGrid Name="dtgTietDien"
+                  AutoGenerateColumns="False"
+                  ItemsSource="{Binding clsTietDien}"
+                  IsReadOnly="True"
+                  SelectionChanged="dtgTietDien_SelectionChanged">  
                     <DataGrid.Columns>
                         <DataGridTextColumn Width="*" Header="Tên" Binding="{Binding Name}" />
                         <DataGridTextColumn Width="*" Header="Chiều rộng cánh" Binding="{Binding ChieuRongCanh}" />

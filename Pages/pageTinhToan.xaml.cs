@@ -16,9 +16,6 @@ using System.Windows.Shapes;
 
 namespace HUCE_DALTUD_LOPNV90_2026_0053867.Pages
 {
-    /// <summary>
-    /// Interaction logic for pageTinhToan.xaml
-    /// </summary>
     public partial class pageTinhToan : Page
     {
         public pageTinhToan()
@@ -27,10 +24,10 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.Pages
             LoadDL();
         }
 
-
         private void sl(object sender, SelectionChangedEventArgs e)
         {
             string selectedColumnName = cbbCotCanTinh.SelectedItem as string;
+            if (string.IsNullOrEmpty(selectedColumnName)) return;
 
             foreach (clsColumn column in clsBienToanCuc.clsColumn)
             {
@@ -40,12 +37,23 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.Pages
                     txtTaiTrong.Text = column.LucDoc.ToString();
                     cbbTietDien.Text = column.TietDien.Name;
                     cbbVatLieu.Text = column.VatLieu.TenVatLieu;
+
+                    // Vẽ lại mặt cắt khi chọn cột
+                    VeMatCatTietDien(column.TietDien.Name);
                     break;
                 }
             }
             TinhVaHienKetQua();
-
         }
+
+        private void cbbTietDien_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cbbTietDien.SelectedItem is string selectedTietDienName)
+            {
+                VeMatCatTietDien(selectedTietDienName);
+            }
+        }
+
         public void LoadDL()
         {
             List<string> listcl = new List<string>();
@@ -73,7 +81,7 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.Pages
 
             foreach (clsTietDien clstietdien in clsBienToanCuc.clsTietDien)
             {
-                if (!tenVatLieuDaCo.Contains(clstietdien.Name))
+                if (!tenTDDaCo.Contains(clstietdien.Name))
                 {
                     tenTDDaCo.Add(clstietdien.Name);
                     listtd.Add(clstietdien);
@@ -82,49 +90,123 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.Pages
             cbbTietDien.ItemsSource = tenTDDaCo;
         }
 
-        private void TinhVaHienKetQua()
+        /// <summary>
+        /// Hàm vẽ tự động mặt cắt chữ I động lên Canvas
+        /// </summary>
+        private void VeMatCatTietDien(string tenTietDien)
         {
-            ChuongTrinhCon ct = new ChuongTrinhCon();
+            if (canvasTietDien == null) return;
+            canvasTietDien.Children.Clear();
 
-            // 1. Lấy dữ liệu từ giao diện
-            double N = double.Parse(txtTaiTrong.Text);   // lực dọc (kN)
-            double Lamda = double.Parse(txtDaiCot.Text); // TẠM dùng chiều dài làm độ mảnh
+            clsTietDien td = clsBienToanCuc.clsTietDien.FirstOrDefault(x => x.Name == tenTietDien);
+            if (td == null) return;
 
-            clsTietDien td = clsBienToanCuc.clsTietDien
-                .First(x => x.Name == cbbTietDien.Text);
-
-            clsVatLieuThep vl = clsBienToanCuc.clsVatLieu
-                .First(x => x.TenVatLieu == cbbVatLieu.Text);
-
-            // 2. Thông số tiết diện
-            double A = td.TinhDienTichTietDien();
-
-            double hw = td.ChieuCaoBung;
+            // 1. Lấy thông số hình học hình chữ I từ Class của bạn
+            double h = td.ChieuCaoBung + 2 * td.DoDayCanh;
+            double b = td.ChieuRongCanh;
             double tw = td.DoDayBung;
-            double bo = td.ChieuRongCanh / 2.0;
             double tf = td.DoDayCanh;
 
-            // 3. Thông số vật liệu
-            double f = vl.CuongDoChiuKeo;     // f
-            double E = vl.MoDunDanHoi;        // E
+            // 2. Tính toán tỷ lệ scale an toàn cho Canvas (Width=200, Height=170)
+            double maxVisualWidth = 150;
+            double maxVisualHeight = 130;
 
-            // Hệ số vật liệu γc (chưa có trong class → gán theo TCVN)
-            double gamaC = 1.1;               // hoặc 1.0 tùy bài
+            double scaleX = maxVisualWidth / b;
+            double scaleY = maxVisualHeight / h;
+            double scale = Math.Min(scaleX, scaleY);
 
+            double drawW = b * scale;
+            double drawH = h * scale;
+            double drawTw = tw * scale;
+            double drawTf = tf * scale;
 
-            // 4. Tính toán
+            double offsetX = (canvasTietDien.Width - drawW) / 2;
+            double offsetY = (canvasTietDien.Height - drawH) / 2;
+
+            // 3. Khởi tạo nét vẽ Polygon bao quanh hình chữ I
+            Polygon iSection = new Polygon();
+            iSection.Stroke = Brushes.Black;
+            iSection.StrokeThickness = 1.5;
+            iSection.Fill = new SolidColorBrush(Color.FromRgb(200, 200, 200));
+
+            double xLeft = offsetX;
+            double xRight = offsetX + drawW;
+            double xMidLeft = offsetX + (drawW - drawTw) / 2;
+            double xMidRight = offsetX + (drawW + drawTw) / 2;
+
+            double yTop = offsetY;
+            double yTopFlangeBottom = offsetY + drawTf;
+            double yBottomFlangeTop = offsetY + drawH - drawTf;
+            double yBottom = offsetY + drawH;
+
+            // Thêm các điểm vẽ khép kín chữ I
+            iSection.Points.Add(new Point(xLeft, yTop));
+            iSection.Points.Add(new Point(xRight, yTop));
+            iSection.Points.Add(new Point(xRight, yTopFlangeBottom));
+            iSection.Points.Add(new Point(xMidRight, yTopFlangeBottom));
+            iSection.Points.Add(new Point(xMidRight, yBottomFlangeTop));
+            iSection.Points.Add(new Point(xRight, yBottomFlangeTop));
+            iSection.Points.Add(new Point(xRight, yBottom));
+            iSection.Points.Add(new Point(xLeft, yBottom));
+            iSection.Points.Add(new Point(xLeft, yBottomFlangeTop));
+            iSection.Points.Add(new Point(xMidLeft, yBottomFlangeTop));
+            iSection.Points.Add(new Point(xMidLeft, yTopFlangeBottom));
+            iSection.Points.Add(new Point(xLeft, yTopFlangeBottom));
+
+            canvasTietDien.Children.Add(iSection);
+
+            // 4. Thêm nhãn kích thước text ở tâm tiết diện
+            TextBlock txtName = new TextBlock();
+            txtName.Text = $"{h}X{b}";
+            txtName.FontWeight = FontWeights.Bold;
+            txtName.FontSize = 12;
+            txtName.Foreground = Brushes.Black;
+
+            txtName.UpdateLayout();
+            Canvas.SetLeft(txtName, (canvasTietDien.Width / 2) - 22);
+            Canvas.SetTop(txtName, (canvasTietDien.Height / 2) - 8);
+
+            canvasTietDien.Children.Add(txtName);
+        }
+
+        private void TinhVaHienKetQua()
+        {
+            if (string.IsNullOrEmpty(cbbTietDien.Text) || string.IsNullOrEmpty(cbbVatLieu.Text)) return;
+
+            ChuongTrinhCon ct = new ChuongTrinhCon();
+            double N = double.Parse(txtTaiTrong.Text);
+            double L = double.Parse(txtDaiCot.Text) * 1000.0;   // đổi m → mm
+
+            clsTietDien td = clsBienToanCuc.clsTietDien.First(x => x.Name == cbbTietDien.Text);
+            clsVatLieuThep vl = clsBienToanCuc.clsVatLieu.First(x => x.TenVatLieu == cbbVatLieu.Text);
+
+            double A = td.TinhDienTichTietDien();
+            double Ix = td.TinhIx();
+            double Iy = td.TinhIy();
+
+            double ix = Math.Sqrt(Ix / A);
+            double iy = Math.Sqrt(Iy / A);
+
+            // lấy bán kính quán tính nhỏ hơn
+            double imin = Math.Min(ix, iy);
+
+            // độ mảnh của cột
+            double Lamda = L / imin;
+            double hw = td.ChieuCaoBung;
+            double tw = td.DoDayBung;
+            double bo = (td.ChieuRongCanh - td.DoDayBung) / 2.0;
+            double tf = td.DoDayCanh;
+
+            double f = vl.CuongDoChiuKeo;
+            double E = vl.MoDunDanHoi;
+            double gamaC = 1.1;
+
             bool ktBen = ct.TinhToanBen(N, A, f, gamaC);
+            bool ktODTT = ct.TinhToanOnDinhTongThe(N, A, f, gamaC, Lamda, E);
+            bool ktODCB = ct.TinhToanOnDinhCucBo(hw, tw, Lamda, f, E, bo, tf);
+            double knChiuNen = ct.TTKhaNangChiuNenLechtam(N, f, gamaC, A, Lamda, E);
 
-            bool ktODTT = ct.TinhToanOnDinhTongThe(
-                N, A, f, gamaC, Lamda, E);
 
-            bool ktODCB = ct.TinhToanOnDinhCucBo(
-                hw, tw, Lamda, f, E, bo, tf);
-
-            double knChiuNen = ct.TTKhaNangChiuNenLechtam(
-                N, f, gamaC, A, Lamda, E);
-
-            // 5. Hiển thị kết quả
             lblKTB.Content = ktBen ? "ĐẠT" : "KHÔNG ĐẠT";
             lblKTODTH.Content = ktODTT ? "ĐẠT" : "KHÔNG ĐẠT";
             lblKTODCB.Content = ktODCB ? "ĐẠT" : "KHÔNG ĐẠT";
@@ -134,6 +216,5 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.Pages
             lblKTODTH.Foreground = ktODTT ? Brushes.Green : Brushes.Red;
             lblKTODCB.Foreground = ktODCB ? Brushes.Green : Brushes.Red;
         }
-
     }
 }

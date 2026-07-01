@@ -109,38 +109,26 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.Pages
         {
             Materials.Add(new Material
             {
-                TenVatLieu = "Thép CB400-V",
-                MoDunDanHoi = "2.0E5 MPa",
-                CuongDoChiuKeo = "400 MPa"
+                TenVatLieu = "CCT34",
+                MoDunDanHoi = "210 N/mm2",
+                CuongDoChiuKeo = "340 N/mm2"
             });
 
             Materials.Add(new Material
             {
-                TenVatLieu = "Thép CB500-V",
-                MoDunDanHoi = "2.0E5 MPa",
-                CuongDoChiuKeo = "500 MPa"
+                TenVatLieu = "CCT38",
+                MoDunDanHoi = "230 N/mm2",
+                CuongDoChiuKeo = "380 N/mm2"
             });
 
             Materials.Add(new Material
             {
-                TenVatLieu = "Bê tông B20",
-                MoDunDanHoi = "3.0E4 MPa",
-                CuongDoChiuKeo = "11.5 MPa"
+                TenVatLieu = "CCT42",
+                MoDunDanHoi = "245 N/mm2",
+                CuongDoChiuKeo = "420 N/mm2"
             });
 
-            Materials.Add(new Material
-            {
-                TenVatLieu = "Bê tông B25",
-                MoDunDanHoi = "3.2E4 MPa",
-                CuongDoChiuKeo = "14.5 MPa"
-            });
-
-            Materials.Add(new Material
-            {
-                TenVatLieu = "Bê tông B30",
-                MoDunDanHoi = "3.4E4 MPa",
-                CuongDoChiuKeo = "17.0 MPa"
-            });
+        
         }
 
     }

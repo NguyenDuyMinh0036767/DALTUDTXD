@@ -34,14 +34,22 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.ViewModels
             double daycanh = Column.TietDien.DoDayCanh;
             double caobung = Column.TietDien.ChieuCaoBung;
             double daybung = Column.TietDien.DoDayBung;
-            double N = Math.Abs(Convert.ToDouble(parameter.txtTaiTrong.Text)) * 10000;
-            //double L = Convert.ToDouble(parameter.txtDaiCot.Text);
+            double N = Math.Abs(Convert.ToDouble(parameter.txtTaiTrong.Text)) ;
+            //double L = Convert.ToDouble(parameter.txtDaiCot.Text);    
             double f = Column.VatLieu.CuongDoChiuKeo;
             double E = Column.VatLieu.MoDunDanHoi;
             double gamaC = 1;
             double A = 2 * (daycanh * caocanh) + (daybung * caobung);
             ChuongTrinhCon chuongTrinhCon = new ChuongTrinhCon();
-            double DoManhLamDa = chuongTrinhCon.DoManh(daycanh, daybung, caocanh, caobung);
+            double ix = Column.TietDien.Tinhix();
+            double iy = Column.TietDien.Tinhiy();
+
+            double L = Column.ChieuCao * 1000.0;
+
+            double lambdaX = L / ix;
+            double lambdaY = L / iy;
+
+            double DoManhLamDa = Math.Max(lambdaX, lambdaY);
 
             parameter.lblKTB.Content = chuongTrinhCon.TinhToanBen(N, A, f, gamaC) ? "Thỏa Mãn" : "Không Thỏa Mãn";
 
