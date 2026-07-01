@@ -31,50 +31,48 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.Pages
 
         private void LoadBaoCao()
         {
-            List<clsBaoCaoDong> ds =
-                new List<clsBaoCaoDong>();
-
-            ChuongTrinhCon ct =
-                new ChuongTrinhCon();
+            List<clsBaoCaoDong> ds = new List<clsBaoCaoDong>();
+            ChuongTrinhCon ct = new ChuongTrinhCon();
 
             foreach (clsColumn column in clsBienToanCuc.clsColumn)
             {
                 clsTietDien td = column.TietDien;
                 clsVatLieuThep vl = column.VatLieu;
 
+                // 1. Đọc tải trọng (Giữ nguyên dấu) và thông số cơ lý vật liệu giống hệt pageTinhToan
                 double N = column.LucDoc;
-                double Lamda = column.ChieuCao;
-
-                double A = td.TinhDienTichTietDien();
-
-                double hw = td.ChieuCaoBung;
-                double tw = td.DoDayBung;
-                double bo = td.ChieuRongCanh / 2.0;
-                double tf = td.DoDayCanh;
-
                 double f = vl.CuongDoChiuKeo;
                 double E = vl.MoDunDanHoi;
+                double gamaC = 1.1; // ĐỒNG BỘ: Sửa từ 1.0 thành 1.1 cho khớp với tab tính toán
 
-                double gamaC = 1.1;
+                // 2. Kích thước hình học cấu kiện
+                double hw = td.ChieuCaoBung;
+                double tw = td.DoDayBung;
+                double bo = (td.ChieuRongCanh - td.DoDayBung) / 2.0; // ĐỒNG BỘ: Công thức tính toán bo trừ đi độ dày bụng
+                double tf = td.DoDayCanh;
 
-                bool ktBen =
-                    ct.TinhToanBen(
-                        N, A, f, gamaC);
+                // Chiều dài cột đổi m -> mm
+                double L = column.ChieuCao * 1000.0;
 
-                bool ktODTT =
-                    ct.TinhToanOnDinhTongThe(
-                        N, A, f, gamaC,
-                        Lamda, E);
+                // Diện tích tiết diện
+                double A = td.TinhDienTichTietDien();
 
-                bool ktODCB =
-                    ct.TinhToanOnDinhCucBo(
-                        hw, tw, Lamda,
-                        f, E, bo, tf);
+                // 3. ĐỒNG BỘ ĐỘ MẢNH (Lamda): Lấy bán kính quán tính nhỏ nhất imin (ix, iy) y hệt bên pageTinhToan
+                double Ix = td.TinhIx();
+                double Iy = td.TinhIy();
 
-                double kncn =
-                    ct.TTKhaNangChiuNenLechtam(
-                        N, f, gamaC,
-                        A, Lamda, E);
+                double ix = Math.Sqrt(Ix / A);
+                double iy = Math.Sqrt(Iy / A);
+                double imin = Math.Min(ix, iy); // Lấy bán kính quán tính nhỏ hơn
+
+                // Tính độ mảnh chuẩn xác phục vụ bài toán ổn định
+                double Lamda = L / imin;
+
+                // 4. Gọi các hàm kiểm tra từ ChuongTrinhCon
+                bool ktBen = ct.TinhToanBen(N, A, f, gamaC);
+                bool ktODTT = ct.TinhToanOnDinhTongThe(N, A, f, gamaC, Lamda, E);
+                bool ktODCB = ct.TinhToanOnDinhCucBo(hw, tw, Lamda, f, E, bo, tf);
+                double knChiuNen = ct.TTKhaNangChiuNenLechtam(N, f, gamaC, A, Lamda, E);
 
                 ds.Add(new clsBaoCaoDong()
                 {
@@ -83,13 +81,13 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.Pages
                     KTBen = ktBen ? "ĐẠT" : "KHÔNG ĐẠT",
                     KTODTT = ktODTT ? "ĐẠT" : "KHÔNG ĐẠT",
                     KTODCB = ktODCB ? "ĐẠT" : "KHÔNG ĐẠT",
-                    KNCN = kncn
+                    KNCN = Math.Round(knChiuNen, 2) // Đồng bộ hiển thị số làm tròn
                 });
             }
 
             dgBaoCao.ItemsSource = ds;
 
-            // Thống kê
+            // Thống kê kết quả hiển thị trên giao diện UI báo cáo
             txtTongCot.Text = ds.Count.ToString();
 
             int soDat = ds.Count(x =>
@@ -98,9 +96,7 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.Pages
                 x.KTODCB == "ĐẠT");
 
             txtDat.Text = soDat.ToString();
-
-            txtKhongDat.Text =
-                (ds.Count - soDat).ToString();
+            txtKhongDat.Text = (ds.Count - soDat).ToString();
         }
 
         private void btnXuatExcel_Click(object sender, RoutedEventArgs e)
@@ -125,8 +121,7 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.Pages
                     ws.Range(1, 1, 1, 6).Merge();
                     ws.Cell(1, 1).Style.Font.Bold = true;
                     ws.Cell(1, 1).Style.Font.FontSize = 16;
-                    ws.Cell(1, 1).Style.Alignment.Horizontal =
-                        XLAlignmentHorizontalValues.Center;
+                    ws.Cell(1, 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
 
                     // ===== THỐNG KÊ =====
                     ws.Cell(3, 1).Value = "Tổng số cột";
@@ -146,15 +141,14 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.Pages
                     ws.Cell(row, 3).Value = "Kiểm tra bền";
                     ws.Cell(row, 4).Value = "Ổn định tổng thể";
                     ws.Cell(row, 5).Value = "Ổn định cục bộ";
-                    ws.Cell(row, 6).Value = "Khả năng chịu nén";
+                    ws.Cell(row, 6).Value = "Khả năng chịu nén (kN)";
 
                     var headerRange = ws.Range(row, 1, row, 6);
 
                     headerRange.Style.Font.Bold = true;
                     headerRange.Style.Fill.BackgroundColor = XLColor.Gray;
                     headerRange.Style.Font.FontColor = XLColor.White;
-                    headerRange.Style.Alignment.Horizontal =
-                        XLAlignmentHorizontalValues.Center;
+                    headerRange.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
 
                     // ===== DỮ LIỆU =====
                     row++;
@@ -184,6 +178,8 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.Pages
                     ws.Columns().AdjustToContents();
 
                     wb.SaveAs(saveFileDialog.FileName);
+
+                    // FIXED: Sử dụng kết hợp MessageBox Button và Image đúng chuẩn WPF
                     if (MessageBox.Show(
                             "Xuất Excel thành công!\nBạn có muốn mở file ngay không?",
                             "Thông báo",
@@ -197,12 +193,6 @@ namespace HUCE_DALTUD_LOPNV90_2026_0053867.Pages
                         });
                     }
                 }
-
-                MessageBox.Show(
-                    "Xuất Excel thành công!",
-                    "Thông báo",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
